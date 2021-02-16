@@ -30,7 +30,7 @@ def currentResults(request):
 
 
 @login_required(login_url='frontEnd:login')
-@coach_restricted(allowed_roles=['Coach', 'Coordinator'])
+# @coach_restricted(allowed_roles=['Coach', 'Coordinator'])
 def historicResults(request):
 
     return render(request, 'frontEnd/historic.html')
