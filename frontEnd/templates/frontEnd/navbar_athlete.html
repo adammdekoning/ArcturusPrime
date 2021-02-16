@@ -1,0 +1,28 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'frontEnd:dashboard' %}">Arcturus Prime</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <ul class="navbar-nav mr-auto">
+        <li><a class="nav-item nav-link" href="{% url 'frontEnd:currentResults' %}">Results</a></li>
+        <li><a class="nav-item nav-link" href="{% url 'frontEnd:historicResults' %}">Historic Results</a></li>
+        <li><a class="nav-item nav-link" href="#">My Profile</a></li>
+        <li><a class="nav-item nav-link" href="#">Training Program</a></li>
+<<<<<<< HEAD
+
+=======
+        
+>>>>>>> user_groups
+        <span>
+          <form class="form my-2 my-lg-0" action="" method="GET">
+            <input class="form-control form-control-dark w-100" placeholder="Search..." name="find">
+          </form>
+        </span>
+
+      </ul>
+      <span class="welcome-message">Hello, {{request.user}}</span>
+      <a class="logout-button" href="{% url 'frontEnd:logout' %}">Logout</a>
+  </nav>

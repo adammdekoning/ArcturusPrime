@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title_block %}Home{% endblock title_block %}
+
+
+    {% block body_block %}
+
+    {% if group == "Athlete" %}
+
+      {% include 'frontEnd/navbar_athlete.html' %}
+      {% include 'frontEnd/dash_content_athlete.html' %}
+
+    {% else %}
+
+      {% include 'frontEnd/navbar.html' %}
+      {% include 'frontEnd/dash_content_coach.html' %}
+
+    {% endif %}
+
+    {% endblock body_block %}

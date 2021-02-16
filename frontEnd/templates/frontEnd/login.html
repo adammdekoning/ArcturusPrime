@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title_block %}Arcturus Prime{% endblock title_block %}
+{% block body_block %}
+
+<div class="login-page">
+
+  <form class="form-signin" method="POST">
+    {% csrf_token %}
+    <div class="text-center mb-4">
+      <h1 class="h3 mb-3 font-weight-normal">Welcome to Arcturus Prime</h1>
+      <p>Please enter your login details to continue</p>
+    </div>
+    <div class="form-label-group">
+      <input class="form-control" type="text" name="username" placeholder="Username...">
+    </div>
+    <div class="form-label-group">
+      <input class="form-control" type="password" name="password" placeholder="Password...">
+    </div>
+    <button class="btn btn-lg btn-link btn-block" type="submit" value="Login">Sign In</button>
+
+    {% for message in messages %}
+    <p id="messages">{{ message }}</p>
+    {% endfor %}
+  </form>
+
+</div>
+
+
+{% endblock body_block %}
