@@ -9,4 +9,6 @@ urlpatterns = [
     path('current-results/', views.currentResults, name='currentResults'),
     path('historic-results/', views.historicResults, name='historicResults'),
     path('logout/', views.logoutUser, name='logout'),
+    path('profile/', views.profilePage, name='profile'),
+    path('analysis/', views.analysis, name='analysis'),
 ]

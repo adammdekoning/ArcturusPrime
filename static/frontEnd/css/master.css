@@ -33,10 +33,12 @@
 
 .footer {
   position: fixed;
+  margin-top: 10px;
   left: 10px;
   bottom: 0;
   width: 100%;
   color: darkgray;
+  background-color: white;
 }
 
 .login-page {

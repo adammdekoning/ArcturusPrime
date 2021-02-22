@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load frontEnd_extras %}
+{% load humanize %}
+
+{% block title_block %}{{ request.user.athlete.name }} -- Profile{% endblock title_block %}
+
+
+{% block body_block %}
+
+{% if group == "Athlete" %}
+
+  {% include 'frontEnd/navbar_athlete.html' %}
+
+{% else %}
+
+  {% include 'frontEnd/navbar.html' %}
+
+{% endif %}
+<br>
+<div class="container-fluid">
+  <h1>{{ request.user.athlete.name }}</h1>
+  <br>
+
+  <div class="row">
+    <div class="col-md-2">
+      <div class="card card-body">
+        <h4>Distances</h4>
+        <hr>
+
+        {% for period, types in distances.items %}
+          <h5>{{period}}</h5>
+            {% for type, distance in types.items %}
+              <p><strong>{{type|capfirst}}:</strong> {{distance|intcomma}}m</p>
+            {% endfor %}
+          <hr>
+        {% endfor %}
+
+      </div>
+
+    </div>
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col-md-6">
+
+          <div class="card card-body">
+            <h4>Personal Best Scores</h4>
+
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Distance</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+
+                  {% for key, value in personal_bests.items %}
+
+                  <tr>
+                    <td> {{ value.session.date|date:'j M Y' }}  </td>
+                    <td> {{ key }} </td>
+                    <td> {{ value.time|format_time }} </td>
+                  </tr>
+
+                  {% endfor %}
+
+                </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card card-body">
+            <h4>Recent Erg Results</h4>
+
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Distance</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  {% for result in recent_ergs %}
+
+                  <tr>
+                    <td> {{ result.session.date|date:'j M Y' }}  </td>
+                    <td> {{ result.distance }} </td>
+                    <td> {{ result.time|format_time }} </td>
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+
+        <div class="col-md-6">
+          <div class="card card-body">
+            <h4>Recent Rowing Results</h4>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card card-body">
+            <h4>Goals</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock body_block %}

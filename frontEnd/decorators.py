@@ -12,7 +12,7 @@ def unauthenticated_user(view_function):
 
     return decorator_function
 
-def coach_restricted(allowed_roles=['Coach', 'Coordinator']):
+def restricted(allowed_roles=[]):
     def decorator(view_function):
         def wrapper_function(request, *args, **kwargs):
 

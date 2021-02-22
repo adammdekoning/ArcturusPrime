@@ -4,11 +4,19 @@
 
 
 {% block body_block %}
-{% include 'frontEnd/navbar.html' %}
+
+{% if group == "Athlete" %}
+
+  {% include 'frontEnd/navbar_athlete.html' %}
+
+{% else %}
+
+  {% include 'frontEnd/navbar.html' %}
+
+{% endif %}
 
 <div class="container-fluid">
   <h1>This is where the historic results will be displayed</h1>
-  
 </div>
 
 
