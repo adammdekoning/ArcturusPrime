@@ -24,7 +24,7 @@ class Athlete(models.Model):
     year_seven_year = models.PositiveIntegerField(null=True) # first year rowing, used to calculate current year group
     club = models.ForeignKey(Club, null=True, on_delete=models.SET_NULL)
     squad = models.ForeignKey(Squad, null=True, blank=True, on_delete=models.SET_NULL)
-    # squad = models.CharField(max_length=256, blank=True, null=True)
+    active = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -45,7 +45,7 @@ class Coordinator(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=256, null=False)
     email = models.CharField(max_length=256, null=True)
-    date_created = models.DateField(auto_now_add=True, null=True)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
     club = models.OneToOneField(Club, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):

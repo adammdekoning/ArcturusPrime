@@ -104,9 +104,6 @@ def getDistanceData():
 
     df = pd.DataFrame(pd.read_sql_query(sql, conn))
     df['rate'].fillna('-', inplace=True)
-    # df['time'].fillna('-', inplace=True)
-    # df['boat_type'].fillna('-', inplace=True)
-    # df['notes'].fillna('-', inplace=True)
 
     return df
 
@@ -147,10 +144,16 @@ def populateSeasonPeriodData(df):
         end_date = row['end_date']
         )
 
+def checkAthlete(df):
+    r = 1
+    for index, row in df.iterrows():
+        athlete = Athlete.objects.get(name=row['name'])
+        athlete.active = row['active']
+        athlete.save()
+        print("{}: active: {}".format(athlete.name, athlete.active))
+        r += 1
 
 if __name__=="__main__":
     print("beginning process...")
-    # populateDistanceData(getDistanceData())
-    populateSessionData(getSessionData())
-    populateErgData(getErgData())
+    checkAthlete(getAthletes())
     print("process complete.")

@@ -8,17 +8,15 @@
 {% block body_block %}
 
 {% if group == "Athlete" %}
-
   {% include 'frontEnd/navbar_athlete.html' %}
-
 {% else %}
-
   {% include 'frontEnd/navbar.html' %}
-
 {% endif %}
+
 <br>
 <div class="container-fluid">
-  <h1>{{ request.user.athlete.name }}</h1>
+  
+  <h1>{{ athlete.name }}</h1>
   <br>
 
   <div class="row">

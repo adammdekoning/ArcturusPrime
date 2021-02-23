@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title_block %}Historic Results{% endblock title_block %}
+
+
+{% block body_block %}
+
+  {% include 'frontEnd/navbar.html' %}
+
+
+<div class="container-fluid">
+  <br>
+  {% if group == "Coordinator"  %}
+  <h1>{{ current_season }} {{ request.user.coordinator.club.name }} Squad</h1>
+  {% else %}
+  <h1>{{ current_season }} {{ request.user.coach.club.name }} Squad</h1>
+  {% endif %}
+
+  <br>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card card-body">
+        <h4>Seniors ({{ senior_squad.count }})</h4>
+        <table>
+          {% for athlete in senior_squad %}
+            <tr>
+              <td>
+                <a href="{% url 'frontEnd:profile' pk=athlete.id %}">{{ athlete.name }}</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-body">
+        <h4>Inters ({{ inter_squad.count }})</h4>
+        <table>
+          {% for athlete in inter_squad %}
+            <tr>
+              <td>
+                <a href="{% url 'frontEnd:profile' pk=athlete.id %}">{{ athlete.name }}</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-body">
+        <h4>Juniors ({{ junior_squad.count }})</h4>
+        <table>
+          {% for athlete in junior_squad %}
+            <tr>
+                <td>
+                  <a href="{% url 'frontEnd:profile' pk=athlete.id %}">{{ athlete.name }}</a>
+                </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+{% endblock body_block %}
