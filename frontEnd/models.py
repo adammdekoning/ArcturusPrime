@@ -83,10 +83,10 @@ class Result(models.Model):
         ('4+','4+'),
         ('8+','8+'),
      }
-     session = models.ForeignKey(Session_Data, on_delete=models.CASCADE)
+     session = models.ForeignKey(Session_Data, related_name='results', on_delete=models.CASCADE)
      distance = models.PositiveIntegerField()
      time = models.TimeField()
-     crew = models.ManyToManyField(Athlete)
+     crew = models.ManyToManyField(Athlete, related_name='names')
      rate = models.CharField(max_length=20, null=True, blank=True)
      notes = models.CharField(max_length=256, null=True, blank=True)
      boat_class = models.CharField(max_length=10, null=True, choices=BOAT_CLASS, blank=True)

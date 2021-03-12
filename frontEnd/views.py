@@ -56,7 +56,7 @@ def currentResults(request):
 
 
 @login_required(login_url='frontEnd:login')
-def historicResults(request):
+def historicErgResults(request):
 
 
     group = request.user.groups.all()[0]
@@ -65,7 +65,7 @@ def historicResults(request):
     'group':str(group),
     }
 
-    return render(request, 'frontEnd/historic.html', context)
+    return render(request, 'frontEnd/historicErg.html', context)
 
 
 def logoutUser(request):
