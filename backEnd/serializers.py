@@ -12,4 +12,5 @@ class ResultSerializer(serializers.ModelSerializer):
         'crew',
         'distance',
         'time',
-        'rate']
+        'rate',
+        'notes']

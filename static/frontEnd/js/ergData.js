@@ -1,28 +1,12 @@
 console.log('ergdata.js is connected')
 
-buildList()
-
-function buildList(){
-  var url = 'http://127.0.0.1:8000/backend/ergResultsList/'
-
-  fetch(url)
-  .then((resp) => resp.json())
-  .then(function(data){
-    console.log('Data:', data)
-
-    var list = data
-    for (var i in list){
-      console.log(list[i].crew[0])
-    }
-  })
-}
-
-
 const columnDefs = [
   { field: "date", sortable: true, filter: true },
   { field: "crew", sortable: true, filter: true },
   { field: "distance", sortable: true, filter: true },
-  { field: "time", sortable: true, filter: true}
+  { field: "time", sortable: true, filter: true},
+  { field: "rate", sortable: true, filter: true},
+  { field: "notes", sortable: true, filter: true}
 ];
 
 // const rowData = [
