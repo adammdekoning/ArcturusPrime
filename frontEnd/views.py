@@ -6,6 +6,7 @@ from frontEnd.decorators import unauthenticated_user, restricted
 from frontEnd.models import *
 from django.contrib.auth.models import Group
 from django.db.models import Avg, Count, Min, Sum
+from frontEnd.func import avgTime, avgSplit
 
 current_season = 2019
 season_start_date = Season_Period.objects.filter(season=current_season).filter(period='pre-season').values_list('start_date')[0][0]
@@ -48,11 +49,62 @@ def currentResults(request):
 
     group = request.user.groups.all()[0]
 
+    sessions = Session_Data.objects.filter(date__gte=season_start_date).order_by('-date')
+
     context = {
     'group':str(group),
+    'sessions':sessions,
+    'current_season':current_season,
     }
 
     return render(request, 'frontEnd/current.html', context)
+
+
+@login_required
+def sessionResults(request, pk):
+
+    cols = []
+
+    session_results = {}
+
+    group = request.user.groups.all()[0]
+
+    session = Result.objects.filter(session__id=pk)
+
+    for distance in session.values_list('distance').order_by('distance').distinct():
+        distance_results = {}
+        for crew in session.filter(distance=distance[0]).values_list('crew'):
+            crew_results_dict = {}
+            crew_times = []
+            for time in session.filter(distance=distance[0]).filter(crew=crew[0]).order_by('piece_number').values_list('time'):
+                crew_times.append(time[0])
+
+            for piece_number in session.filter(distance=distance[0]).filter(crew=crew[0]).values_list('piece_number'):
+                if piece_number[0] not in cols:
+                    cols.append(piece_number[0])
+
+            crew_average = avgTime(crew_times)
+            crew_average_split = avgSplit(crew_average, distance[0])
+
+            crew_results_dict['average']=[crew_average]
+            crew_results_dict['average_split']=[crew_average_split]
+            crew_results_dict['results']=crew_times
+
+            distance_results[Athlete.objects.get(id=crew[0]).name] = crew_results_dict
+
+        session_results[distance[0]] = distance_results
+
+
+
+
+    context = {
+    'group':str(group),
+    'session_results':session_results,
+    'session':session,
+    'cols':cols
+    }
+
+    return render(request, 'frontEnd/session.html', context)
 
 
 @login_required(login_url='frontEnd:login')
@@ -105,12 +157,15 @@ def profilePage(request, pk):
             period_dict[type[0]] = query_set.filter(type=type[0]).aggregate(Sum('distance'))['distance__sum']
         distances[period[0]] = period_dict
 
+    session_log = Distance_Data.objects.filter(athlete__id=id_filter).order_by('-date')[:5]
+
     context = {
     'athlete':athlete,
     'group':group,
     'personal_bests':personal_bests,
     'recent_ergs':recent_ergs,
     'distances':distances,
+    'session_log': session_log,
     }
 
     return render(request, 'frontEnd/profile.html', context)

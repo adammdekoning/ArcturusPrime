@@ -15,7 +15,7 @@
 
 <br>
 <div class="container-fluid">
-  
+
   <h1>{{ athlete.name }}</h1>
   <br>
 
@@ -59,7 +59,7 @@
 
                   <tr>
                     <td> {{ value.session.date|date:'j M Y' }}  </td>
-                    <td> {{ key }} </td>
+                    <td> {{ key|intcomma }} </td>
                     <td> {{ value.time|format_time }} </td>
                   </tr>
 
@@ -89,7 +89,7 @@
 
                   <tr>
                     <td> {{ result.session.date|date:'j M Y' }}  </td>
-                    <td> {{ result.distance }} </td>
+                    <td> {{ result.distance|intcomma }} </td>
                     <td> {{ result.time|format_time }} </td>
                   </tr>
 
@@ -110,7 +110,51 @@
 
         <div class="col-md-6">
           <div class="card card-body">
+            <h4>Session Log</h4>
+
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Boat Class</th>
+                    <th>Distance</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  {% for log in session_log %}
+
+                  <tr>
+                    <td> {{ log.date|date:'j M Y' }}  </td>
+                    <td> {{ log.type|capfirst }} </td>
+                    <td> {{ log.boat_class }} </td>
+                    <td> {{ log.distance|intcomma }} </td>
+                    <td> {{ log.notes}} </td>
+                  </tr>
+
+                  {% endfor %}
+                </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+      <br>
+
+      <div class="row">
+
+        <div class="col-md-6">
+          <div class="card card-body">
             <h4>Goals</h4>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card card-body">
+            <h4>Coach Notes</h4>
           </div>
         </div>
       </div>

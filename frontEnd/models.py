@@ -65,7 +65,7 @@ class Session_Data(models.Model):
     }
 
     date = models.DateField()
-    type = models.CharField(max_length=256, null=True, choices=TYPE, blank=True)
+    type = models.CharField(max_length=256, null=True, blank=True, choices=TYPE)
     notes = models.CharField(max_length=256, null=True, blank=True)
 
     def __str__(self):
@@ -89,7 +89,8 @@ class Result(models.Model):
      crew = models.ManyToManyField(Athlete, related_name='names')
      rate = models.CharField(max_length=20, null=True, blank=True)
      notes = models.CharField(max_length=256, null=True, blank=True)
-     boat_class = models.CharField(max_length=10, null=True, choices=BOAT_CLASS, blank=True)
+     piece_number = models.PositiveIntegerField(default=1)
+     boat_class = models.CharField(max_length=10, null=True, blank=True, choices=BOAT_CLASS)
 
 
 class Distance_Data(models.Model):

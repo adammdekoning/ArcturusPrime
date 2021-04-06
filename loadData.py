@@ -153,7 +153,71 @@ def checkAthlete(df):
         print("{}: active: {}".format(athlete.name, athlete.active))
         r += 1
 
+
+def getOnwaterData():
+
+    sql = """
+        SELECT [session_Date]
+          ,[name]
+          ,[distance]
+          ,[boat_type]
+          ,[piece_Number]
+          ,[piece_Time]
+          ,[rate]
+          ,[notes]
+          FROM [ADK_Initial].[dbo].[session_Data] sd
+
+          left join boats b
+          on sd.boat_Number = b.boat_number
+          where sd.boat_Number = 1
+    """
+
+
+    df = pd.DataFrame(pd.read_sql_query(sql, conn))
+    return df
+
+
+def loadonWaterData(df):
+
+    for index, row in df.iterrows():
+        try:
+            s = Session_Data.objects.get(id=Session_Data.objects.filter(date=row['session_Date']).filter(type='rowing').values_list('id')[0][0])
+
+            entry = Result.objects.create(
+            session = s,
+            distance=row['distance'],
+            time=row['piece_Time'],
+            rate=row['rate'],
+            notes=row['notes'],
+            piece_number=row['piece_Number'],
+            boat_class=row['boat_type']
+            )
+            a = Athlete.objects.get(name=row['name'])
+
+            entry.crew.add(a)
+
+        except:
+
+            s = Session_Data.objects.create(
+            date = row['session_Date'],
+            type='rowing',
+            )
+
+            entry = Result.objects.create(
+            session = s,
+            distance=row['distance'],
+            time=row['piece_Time'],
+            rate=row['rate'],
+            notes=row['notes'],
+            piece_number=row['piece_Number'],
+            boat_class=row['boat_type']
+            )
+            a = Athlete.objects.get(name=row['name'])
+
+            entry.crew.add(a)
+
+
 if __name__=="__main__":
     print("beginning process...")
-    checkAthlete(getAthletes())
+    loadonWaterData(getOnwaterData())
     print("process complete.")

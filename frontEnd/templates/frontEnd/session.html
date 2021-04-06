@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load frontEnd_extras %}
+{% load humanize %}
+
+{% block title_block %}Results{% endblock title_block %}
+
+
+{% block body_block %}
+
+{% if group == "Athlete" %}
+  {% include 'frontEnd/navbar_athlete.html' %}
+{% else %}
+  {% include 'frontEnd/navbar.html' %}
+{% endif %}
+
+<br>
+
+<div class="container-fluid">
+
+  <h1>Session Results</h1>
+
+  <br>
+
+  <table class="table table-striped">
+
+    <thead>
+      <tr>
+        <th>Crew</th>
+        <th>Distance</th>
+        <th>Average Time</th>
+        <th>Average Split</th>
+        {% for i in cols %}
+          <th>Piece {{i}}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for distance, crews in session_results.items %}
+        {% for crew, types in crews.items %}
+          <tr>
+            <td>{{ crew }}</td>
+            <td>{{distance|intcomma}}m</td>
+            {% for type, results in types.items %}
+              {% for time in results %}
+                <td>{{time|format_time}}</td>
+              {% endfor %}
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      {% endfor %}
+    </tbody>
+
+  </table>
+  <!-- {{ cols }}
+  {% for distance, crews in session_results.items %}
+    <p>{{distance}}</p>
+    {% for crew, types in crews.items %}
+      <hr>
+      <p>{{ crew }}</p>
+      {% for type, results in types.items %}
+        <p>{{ type }}</p>
+        {% for time in results %}
+          <p>{{time|format_time}}</p>
+        {% endfor %}
+      {% endfor %}
+    {% endfor %}
+  {% endfor %} -->
+
+  <br>
+  <button onclick="goBack()" type="button" name="button" class="btn btn-outline-primary">Back</button>
+  <br>
+</div>
+
+{% endblock body_block %}

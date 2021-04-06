@@ -18,7 +18,31 @@
 <br>
 
 <div class="container-fluid">
-  <h1>This is where the current results will be displayed</h1>
+  <h1>{{current_season}} Season Results</h1>
+  <br>
+
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card card-body">
+
+        <table>
+          {% for session in sessions %}
+          <tr>
+            <td>
+              <a href="{% url 'frontEnd:sessionResults' pk=session.id %}">{{ session.type|capfirst }} {{session.date|date:"l d M Y"}}</a>
+            </td>
+          </tr>
+          {% endfor %}
+
+        </table>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
 
 </div>
 {% endblock body_block %}

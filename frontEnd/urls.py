@@ -12,4 +12,5 @@ urlpatterns = [
     path('profile/<int:pk>', views.profilePage, name='profile'),
     path('analysis/', views.analysis, name='analysis'),
     path('athlete-list/', views.athleteList, name='athleteList'),
+    path('session/<int:pk>', views.sessionResults, name='sessionResults'),
 ]
