@@ -29,7 +29,10 @@
           {% for session in sessions %}
           <tr>
             <td>
-              <a href="{% url 'frontEnd:sessionResults' pk=session.id %}">{{ session.type|capfirst }} {{session.date|date:"l d M Y"}}</a>
+              {{ session.type|capfirst }} 
+            </td>
+            <td>
+              <a href="{% url 'frontEnd:sessionResults' pk=session.id %}">{{session.date|date:"l d M Y"}}</a>
             </td>
           </tr>
           {% endfor %}

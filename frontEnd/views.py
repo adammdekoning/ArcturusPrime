@@ -8,9 +8,9 @@ from django.contrib.auth.models import Group
 from django.db.models import Avg, Count, Min, Sum
 from frontEnd.func import avgTime, avgSplit
 
-current_season = 2019
+current_season = 2018
 season_start_date = Season_Period.objects.filter(season=current_season).filter(period='pre-season').values_list('start_date')[0][0]
-
+season_end_date = Season_Period.objects.filter(season=current_season).filter(period='term one').values_list('end_date')[0][0]
 
 # Create your views here.
 @unauthenticated_user
@@ -49,7 +49,7 @@ def currentResults(request):
 
     group = request.user.groups.all()[0]
 
-    sessions = Session_Data.objects.filter(date__gte=season_start_date).order_by('-date')
+    sessions = Session_Data.objects.filter(date__gte=season_start_date, date__lte=season_end_date).order_by('-date')
 
     context = {
     'group':str(group),
@@ -63,15 +63,17 @@ def currentResults(request):
 @login_required
 def sessionResults(request, pk):
 
-    cols = []
 
     session_results = {}
 
     group = request.user.groups.all()[0]
 
+    session_info = Session_Data.objects.get(id=pk)
+
     session = Result.objects.filter(session__id=pk)
 
     for distance in session.values_list('distance').order_by('distance').distinct():
+        cols = []
         distance_results = {}
         for crew in session.filter(distance=distance[0]).values_list('crew'):
             crew_results_dict = {}
@@ -89,10 +91,17 @@ def sessionResults(request, pk):
             crew_results_dict['average']=[crew_average]
             crew_results_dict['average_split']=[crew_average_split]
             crew_results_dict['results']=crew_times
+            print(cols)
 
             distance_results[Athlete.objects.get(id=crew[0]).name] = crew_results_dict
 
+        for crew, crew_results in distance_results.items():
+            if len(crew_results['results']) < len(cols):
+                for i in range(len(cols) - len(crew_results['results'])):
+                    crew_results['results'].append('-')
+
         session_results[distance[0]] = distance_results
+
 
 
 
@@ -101,7 +110,8 @@ def sessionResults(request, pk):
     'group':str(group),
     'session_results':session_results,
     'session':session,
-    'cols':cols
+    'cols':cols,
+    'session_info':session_info,
     }
 
     return render(request, 'frontEnd/session.html', context)
@@ -141,7 +151,7 @@ def profilePage(request, pk):
     athlete = Athlete.objects.get(id=id_filter)
 
     personal_bests = {}
-    for distance in Result.objects.filter(crew__id=id_filter).values_list('distance').order_by('distance').distinct():
+    for distance in Result.objects.filter(crew__id=id_filter).filter(session__type='erg').values_list('distance').order_by('distance').distinct():
         personal_best = Result.objects.filter(crew__id=id_filter).filter(distance=distance[0]).order_by('time')[0]
         personal_bests[distance[0]]=personal_best
 
