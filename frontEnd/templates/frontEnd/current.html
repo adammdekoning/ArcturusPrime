@@ -22,30 +22,32 @@
   <br>
 
   <div class="row">
-    <div class="col-md-3">
-      <div class="card card-body">
+      <div class="col-md-2">
+        <div class="card card-body">
 
-        <table>
-          {% for session in sessions %}
-          <tr>
-            <td>
-              {{ session.type|capfirst }} 
-            </td>
-            <td>
-              <a href="{% url 'frontEnd:sessionResults' pk=session.id %}">{{session.date|date:"l d M Y"}}</a>
-            </td>
-          </tr>
-          {% endfor %}
+          <table>
+            {% for session in sessions %}
+            <tr>
+              <td>
+                <p class="session_date" id="{{session.id}}"><strong>{{session.type|capfirst}}</strong> {{session.date|date:"D d M Y"}}</p>
 
-        </table>
+              </td>
 
-
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
       </div>
 
-    </div>
+      <div id="results_window" class="col-md-10">
 
+      </div>
   </div>
 
 
+
+
+
 </div>
+
 {% endblock body_block %}

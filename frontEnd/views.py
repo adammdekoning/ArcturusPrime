@@ -7,8 +7,10 @@ from frontEnd.models import *
 from django.contrib.auth.models import Group
 from django.db.models import Avg, Count, Min, Sum
 from frontEnd.func import avgTime, avgSplit
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
-current_season = 2018
+current_season = 2019
 season_start_date = Season_Period.objects.filter(season=current_season).filter(period='pre-season').values_list('start_date')[0][0]
 season_end_date = Season_Period.objects.filter(season=current_season).filter(period='term one').values_list('end_date')[0][0]
 
@@ -91,7 +93,6 @@ def sessionResults(request, pk):
             crew_results_dict['average']=[crew_average]
             crew_results_dict['average_split']=[crew_average_split]
             crew_results_dict['results']=crew_times
-            print(cols)
 
             distance_results[Athlete.objects.get(id=crew[0]).name] = crew_results_dict
 
@@ -101,10 +102,10 @@ def sessionResults(request, pk):
                     crew_results['results'].append('-')
 
         session_results[distance[0]] = distance_results
-
-
-
-
+    #
+    # jsi = json.dumps(session_results, cls=DjangoJSONEncoder)
+    #
+    # print(jsi)
 
     context = {
     'group':str(group),

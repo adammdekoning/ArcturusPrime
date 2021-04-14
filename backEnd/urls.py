@@ -10,4 +10,5 @@ app_name = 'backEnd'
 urlpatterns = [
     path('testPage/', views.testView, name='tester'),
     path('ergResultsList/', views.ergResultList, name='ergResultList'),
+    path('session_results_json/<int:pk>/', views.session_results_json, name='session_results_json')
 ]

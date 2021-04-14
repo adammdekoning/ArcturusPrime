@@ -19,11 +19,13 @@
 
   <h1>{{session_info.type|capfirst}} Results</h1>
   <h3>{{session_info.date|date:"l d M Y"}}</h3>
+  {% if session_info.notes %}
   <h4>{{session_info.notes}}</h4>
+  {% endif %}
 
-  <br>
 
-  <table class="table table-striped">
+  {% for dist in session_results %}
+  <table id="sortable_results_table" class="table table-striped">
 
     <thead>
       <tr>
@@ -54,24 +56,34 @@
     </tbody>
 
   </table>
-  <!-- {{ cols }}
-  {% for distance, crews in session_results.items %}
-    <p>{{distance}}</p>
-    {% for crew, types in crews.items %}
-      <hr>
-      <p>{{ crew }}</p>
-      {% for type, results in types.items %}
-        <p>{{ type }}</p>
-        {% for time in results %}
-          <p>{{time|format_time}}</p>
-        {% endfor %}
-      {% endfor %}
-    {% endfor %}
-  {% endfor %} -->
-
+  <br>
+  {% endfor %}
   <br>
   <button onclick="goBack()" type="button" name="button" class="btn btn-outline-primary">Back</button>
   <br>
 </div>
 
 {% endblock body_block %}
+
+{% block scripts_block %}
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.24/af-2.3.5/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/cr-1.5.3/date-1.0.3/fc-3.3.2/kt-2.6.1/r-2.2.7/rg-1.1.2/rr-1.2.7/sc-2.0.3/sb-1.0.1/sp-1.2.2/datatables.min.css"/>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.24/af-2.3.5/b-1.7.0/b-colvis-1.7.0/b-html5-1.7.0/cr-1.5.3/date-1.0.3/fc-3.3.2/kt-2.6.1/r-2.2.7/rg-1.1.2/rr-1.2.7/sc-2.0.3/sb-1.0.1/sp-1.2.2/datatables.min.js"></script>
+
+  <script>
+  $(document).ready( function () {
+    $('#sortable_results_table').DataTable({
+
+      dom: 'B<"clear">lfrtip',
+      buttons: {
+        name:'primary',
+        buttons:['copy', 'excel', 'pdf']
+      }}
+    );
+  });
+
+  </script>
+{% endblock scripts_block %}
